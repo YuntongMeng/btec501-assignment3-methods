@@ -21,7 +21,7 @@ Supply your own authorized input files. The expression input is a tab-separated 
 Rscript assignment3_checkpoint.R path/to/expression.tsv output/probe_level
 ```
 
-Run sample quality checks and quantile normalization, then fit limma on the probe sets with the contrast Group 2 minus Group 1. Apply Benjamini–Hochberg correction and compare absolute signal cutoffs of 0, 0.585, and 1 at adjusted P < 0.05. The heatmap uses the strict cutoff. For GO Biological Process ORA, map probe sets to unique Entrez IDs and use the tested, mappable genes as the background. For preranked GSEA, retain one probe per gene based on the highest mean signal and rank genes by the signed moderated t statistic.
+Run sample quality checks and quantile normalization, then fit limma on the probe sets with the contrast Group 2 minus Group 1. Apply Benjamini–Hochberg correction and compare absolute signal cutoffs of 0, 0.585, and 1 at adjusted P < 0.05. These cutoffs were chosen assuming the input is on a log2 scale, where they correspond to no minimum, 1.5-fold and 2-fold changes; see [Note on the data scale](#note-on-the-data-scale). The heatmap uses the strict cutoff. For GO Biological Process ORA, map probe sets to unique Entrez IDs and use the tested, mappable genes as the background. For preranked GSEA, retain one probe per gene based on the highest mean signal and rank genes by the signed moderated t statistic.
 
 ## ExpressAnalyst differential expression check
 
@@ -31,8 +31,12 @@ Export the gene mapping report from the ExpressAnalyst run for the same expressi
 Rscript verify_expressanalyst.R path/to/expression.tsv path/to/gene_mapping_report.csv output/expressanalyst_de.csv
 ```
 
-Average the signals of matched probes with the same Entrez ID separately for each sample and retain the unmatched probe sets. Then run quantile normalization, limma with Group 2 minus Group 1, and Benjamini–Hochberg correction. The script writes the full differential expression table and prints counts for absolute signal cutoffs of 0, 0.58, and 1 at adjusted P < 0.05. This check covers differential expression; the report's website plots and enrichment results come from ExpressAnalyst.
+Average the signals of matched probes with the same Entrez ID separately for each sample and retain the unmatched probe sets. Then run quantile normalization, limma with Group 2 minus Group 1, and Benjamini–Hochberg correction. The script writes the full differential expression table and prints counts for absolute signal cutoffs of 0, 0.58, and 1 at adjusted P < 0.05, the same log2-based cutoffs as the website. This check covers differential expression; the report's website plots and enrichment results come from ExpressAnalyst.
 
-## Scale audit of the input data
+## Note on the data scale
 
-The [`scale_audit/`](scale_audit/) folder traces the public source of the MAMA ColonData "Japan" matrix (GEO GSE4554) and tests which log scale it is on. See [scale_audit/README.md](scale_audit/README.md).
+Both workflows treat the input as log2-scaled, which is also what ExpressAnalyst assumes when it reports log2 fold changes. While reproducing the website workflow in R, I checked this assumption independently, because the values looked unusual for log2 microarray data: their range is −0.54 to 9.36, the median is 3.2, and some values are negative.
+
+Tracing the data showed that it matches the public MAMA ColonData "Japan" matrix, derived from GEO GSE4554. That matrix is documented as log2 and was produced by MAS5 → VSN → quantile normalization. However, its numerical scale could not be reproduced exactly. Without any extra rescaling, the values are closest to a natural-log scale.
+
+This uncertainty does not change adjusted P-values, rankings or GSEA. It changes how the fold-change cutoffs should be read, and therefore which features enter the heatmap and ORA: if the data were on a natural-log scale, a cutoff of 1 would correspond to about a 2.7-fold change rather than a 2-fold change. The full investigation, code and figures are in [`scale_audit/`](scale_audit/README.md).
