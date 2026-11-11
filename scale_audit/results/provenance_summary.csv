@@ -1,0 +1,9 @@
+"check","value"
+"Samples in MAMA Japan",41
+"Labels agreeing with GEO (MSI/MSS)",41
+"Min per-sample Spearman vs MAS5",0.999806
+"Max spread among equal MAS5 values",0
+"Negative values",581
+"Negative values with MAS5 call = Absent",581
+"MAS5 signal behind negative values (median)",0.3
+"MAS5 signal behind negative values (max)",5.8

@@ -32,3 +32,7 @@ Rscript verify_expressanalyst.R path/to/expression.tsv path/to/gene_mapping_repo
 ```
 
 Average the signals of matched probes with the same Entrez ID separately for each sample and retain the unmatched probe sets. Then run quantile normalization, limma with Group 2 minus Group 1, and Benjamini–Hochberg correction. The script writes the full differential expression table and prints counts for absolute signal cutoffs of 0, 0.58, and 1 at adjusted P < 0.05. This check covers differential expression; the report's website plots and enrichment results come from ExpressAnalyst.
+
+## Scale audit of the input data
+
+The [`scale_audit/`](scale_audit/) folder traces the public source of the MAMA ColonData "Japan" matrix (GEO GSE4554) and tests which log scale it is on. See [scale_audit/README.md](scale_audit/README.md).

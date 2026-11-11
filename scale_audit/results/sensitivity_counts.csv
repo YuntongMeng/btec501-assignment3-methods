@@ -1,0 +1,7 @@
+"normalisation","log2FC_cutoff","n_if_scale_is_log2","n_if_scale_is_ln"
+"as_is",0,98,98
+"as_is",0.585,80,98
+"as_is",1,35,68
+"extra_QN",0,100,100
+"extra_QN",0.585,81,100
+"extra_QN",1,34,65

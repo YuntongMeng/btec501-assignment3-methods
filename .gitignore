@@ -3,3 +3,6 @@
 !/README.md
 !/assignment3_checkpoint.R
 !/verify_expressanalyst.R
+!/scale_audit/
+!/scale_audit/**
+/scale_audit/data/
